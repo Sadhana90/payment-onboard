@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -31,6 +32,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.paymentonboard.entity.User;
+import com.paymentonboard.helper.JwtTokenUtil;
+import com.paymentonboard.repository.MerchantRepository;
 import com.paymentonboard.repository.ResellerRepository;
 import com.paymentonboard.repository.UserRepository;
 import com.paymentonboard.util.GeneralUtil;
@@ -57,6 +60,8 @@ public class SelfOnboardService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	CustomUserDetailsService customUserDetailsService;
 
 	@Autowired
 	GeneralUtil generalUtil;
@@ -66,6 +71,9 @@ public class SelfOnboardService {
 
 	@Autowired
 	NotificationProperty notificationProperty;
+	
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
 
 	
 	private static Logger log = LoggerFactory.getLogger(SelfOnboardService.class);
@@ -179,7 +187,7 @@ public class SelfOnboardService {
                 log.info("MM is {} :", MM);
 				if (minutesDifference >= 0 && minutesDifference <= 3) {
                 	if (vereified.equals("0")) {
-                		//String merchantId = merchantRepo.findMerchantId();
+                		String merchantId = merchantRepo.findMerchantId();
                 		String firstName = FullName.contains(" ") ? FullName.split(" ")[0]: FullName;
                 		String password = generalUtil.crypt((firstName.length() > 11 ? firstName.substring(0, 11) : firstName)
 								+ "@" + new SimpleDateFormat("Y").format(new Date()));

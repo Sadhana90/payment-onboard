@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paymentonboard.helper.JwtTokenUtil;
 import com.paymentonboard.service.SelfOnboardService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@Slf4j
 public class SelfOnboardController {
 	@Autowired
 	private SelfOnboardService selfOnboardService;
@@ -39,9 +42,8 @@ public class SelfOnboardController {
 	@PostMapping("/verified-OTP")
 	public ResponseEntity<?> verifyOTP(@RequestBody String jsonBody) {
 		JSONObject js = new JSONObject(jsonBody);
-		String getMobileOTP = js.getString("mobileOTP");
 		String getEmailOTP = js.getString("emailOTP");
-		Map<String, Object> SignUpResponse= selfOnboardService.getOTPVerified(getMobileOTP, getEmailOTP );
+		Map<String, Object> SignUpResponse= selfOnboardService.getOTPVerified( getEmailOTP );
 		
 		return ResponseEntity.ok("");
 	} 
@@ -68,5 +70,5 @@ public class SelfOnboardController {
 		}		
 		return ResponseEntity.ok(responseMsg);
 		
-		
+	}
 	}
