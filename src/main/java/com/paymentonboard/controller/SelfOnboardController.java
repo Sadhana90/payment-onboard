@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paymentonboard.helper.JwtTokenUtil;
 import com.paymentonboard.service.SelfOnboardService;
 
 
@@ -18,6 +20,9 @@ import com.paymentonboard.service.SelfOnboardService;
 public class SelfOnboardController {
 	@Autowired
 	private SelfOnboardService selfOnboardService;
+	
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
 		
 	@PostMapping("/get-Signup")
 	public ResponseEntity<?> getSignup(@RequestBody String jsonBody) {
@@ -30,19 +35,18 @@ public class SelfOnboardController {
 		return ResponseEntity.ok(signupResponse);
 	}
 	
-	/*@CrossOrigin(origins = { "http://localhost:4200", "https://pa-preprod.1pay.in" })
+	@CrossOrigin(origins = { "http://localhost:4200", "https://pa-preprod.1pay.in" })
 	@PostMapping("/verified-OTP")
 	public ResponseEntity<?> verifyOTP(@RequestBody String jsonBody) {
 		JSONObject js = new JSONObject(jsonBody);
-//		String getMobileOTP = js.getString("mobileOTP");
+		String getMobileOTP = js.getString("mobileOTP");
 		String getEmailOTP = js.getString("emailOTP");
-//		Map<String, Object> SignUpResponse= selfOnboardService.getOTPVerified(getMobileOTP, getEmailOTP );
-//		Map<String, Object> SignUpResponse= selfOnboardService.getOTPVerified( getEmailOTP );
+		Map<String, Object> SignUpResponse= selfOnboardService.getOTPVerified(getMobileOTP, getEmailOTP );
 		
 		return ResponseEntity.ok("");
-	} */
+	} 
 	
-/*	@PostMapping("/create-passwordSelf")
+	@PostMapping("/create-passwordSelf")
 	public ResponseEntity<?> createpasswordSelf(@RequestBody String jsonBody, @RequestHeader String Authorization) {
 		JSONObject js = new JSONObject(jsonBody);
 		JSONObject js1 = new JSONObject();
@@ -63,6 +67,6 @@ public class SelfOnboardController {
 			log.error("Error while create password self : {}", e.getMessage());
 		}		
 		return ResponseEntity.ok(responseMsg);
-		*/
+		
 		
 	}

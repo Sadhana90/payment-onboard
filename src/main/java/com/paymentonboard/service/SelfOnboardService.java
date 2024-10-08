@@ -48,7 +48,8 @@ public class SelfOnboardService {
 	@Autowired
     private EmailService emailService;
 	
-	//private MerchantRepository merchantRepo;
+	@Autowired
+	private MerchantRepository merchantRepo;
 	
 	@Autowired
 	private ResellerRepository resellerRepo;
@@ -145,7 +146,7 @@ public class SelfOnboardService {
 		return Msg;
 	}
 	
-	/*public Map<String, Object> getOTPVerified(String getEmailOTP) {
+	public Map<String, Object> getOTPVerified(String getEmailOTP) {
 		Map<String, Object> Msg = null ;
 		String message = null;
 		JSONObject js1 = new JSONObject();
@@ -248,10 +249,10 @@ public class SelfOnboardService {
 		
 		Msg = js1.toMap();
 		return Msg;
-	} */
+	} 
 	
 	
-	/*public  Map<String, Object> createPasswordSelf(String newpassword, String JwtToken){
+	public  Map<String, Object> createPasswordSelf(String newpassword, String JwtToken){
 		Map<String, Object> Msg = null ;
 		String message = null;
 		JSONObject js1 = new JSONObject();
@@ -274,7 +275,7 @@ public class SelfOnboardService {
 		
 		Msg = js1.toMap();
 		return Msg;
-	 } */
+	 } 
 	
 	public String emailSend(String emailId, String fullName, String otp) {
 		String message = null;

@@ -50,4 +50,18 @@ public class GeneralUtil {
 
         return null;
     }
+    
+    public static String isUserMatching(String authString) {
+        String Statusapp = null;
+        if (authString.equals("4ae7df22936b7be31fd9ca5d99c6614a")) {
+            Statusapp = "Admin";
+        } else if (authString.equals("af9d1620e1bd350400ca30a793782d21")) {
+            Statusapp = "Merchant";
+        } else if (authString.equals("b2b799c9e6a4557990afc253ec54e521")) {
+            Statusapp = "Aggregator";
+        }
+
+
+        return Statusapp;
+    }
 }

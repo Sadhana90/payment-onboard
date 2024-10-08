@@ -15,14 +15,18 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
-/*@Component
+@Component
 @Slf4j
 public class JwtTokenUtil {
 
@@ -65,7 +69,7 @@ public class JwtTokenUtil {
 			pubkey = keyFactory.generatePublic(keySpec);
 		} catch (Exception ex) {
 			log.error("Error while generating token: {}", ex.getMessage());
-			//throw new BadRequestException(ErrorCode.AUTH102.getCode(), ErrorCode.AUTH102.getMsg());
+			throw new BadRequestException(ErrorCode.AUTH102.getCode(), ErrorCode.AUTH102.getMsg());
 		}
 		return Jwts.parser().setSigningKey(pubkey).parseClaimsJws(token).getBody();
 
@@ -96,11 +100,11 @@ public class JwtTokenUtil {
 			String privateKeyPEM = key.replace("-----BEGIN PRIVATE KEY-----", "").replaceAll(System.lineSeparator(), "")
 					.replace("-----END PRIVATE KEY-----", "").replace("\n", "");
 			byte[] encoded = Base64.getDecoder().decode(privateKeyPEM);
-			//java.security.Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+			java.security.Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 			privatekey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(encoded));
 		} catch (Exception e) {
 			log.error("Error while generating token: {}", e.getMessage());
-		//	throw new BadRequestException(ErrorCode.AUTH102.getCode(), ErrorCode.AUTH102.getMsg());
+			throw new BadRequestException(ErrorCode.AUTH102.getCode(), ErrorCode.AUTH102.getMsg());
 		}
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + (JWT_TOKEN_VALIDITY)))
@@ -116,8 +120,7 @@ public class JwtTokenUtil {
 
 	public String getLoggedInUserName() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	//	return ((AuditUser) authentication.getPrincipal()).getUsername();
-		return jwtPrivateKeyPath;
-	} 
+		return ((AuditUser) authentication.getPrincipal()).getUsername();
+	}
 
-}*/
+}
